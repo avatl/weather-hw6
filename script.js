@@ -1,19 +1,19 @@
 var savedLocations = [];
 var currentLocation;
 function initialize() {
-    //Take the  previous locations from local storage
-    savedLocations = JSON.parse(localStorage.getItem("weather"));
-    //display previous searches from local storage
+    //display prior cities from local storage
+    savedLocations = JSON.parse(localStorage.getItem("cities"));
+    
     if (savedLocations) {
-        //get the last city searched so we can display it
+        
         currentLocation = savedLocations[savedLocations.length - 1];
         showPrevious();
         getCurrent(currentLocation);
     }
     else {
-        //try to geolocate, otherwise set city to raleigh
+        // ask to enable location services - default to nyc if denied
         if (!navigator.geolocation) {
-            //can't geolocate and no previous searches, so just give them one
+            
             getCurrent("New york");
         }
         else {
@@ -35,12 +35,12 @@ function success(position) {
     });
 }
 function error(){
-    //Giving a previous search since there isn't one
+    // default to nyc
     currentLocation= "New york"
     getCurrent(currentLocation);
 }
 function showPrevious() {
-    //show the previous searched for locations based on what is in local storage
+    // display prior local storage results
     if (savedLocations) {
         $("#previousSearches").empty();
         var Btns = $("<div>").attr("class", "list-group");
@@ -68,33 +68,33 @@ function getCurrent(city) {
             initialize();
         }
     }).then(function (response) {
-        //created a  card
+        // cards
         var currentCard = $("<div>").attr("class", "card bg-light");
         $("#forecast").append(currentCard);
-        //add location to card
+        // card for current weather
         var currentCardHead = $("<div>").attr("class", "card-header").text("Current weather for " + response.name);
         currentCard.append(currentCardHead);
         var cardRow = $("<div>").attr("class", "row no-gutters");
         currentCard.append(cardRow);
-        //get icon for weather conditions
+        // weather icons
         var iconURL = "https://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png";
         var imgDiv = $("<div>").attr("class", "col-md-4").append($("<img>").attr("src", iconURL).attr("class", "card-img"));
         cardRow.append(imgDiv);
         var textDiv = $("<div>").attr("class", "col-md-8");
         var cardBody = $("<div>").attr("class", "card-body");
         textDiv.append(cardBody);
-        //display city name
+        // last searched city name
         cardBody.append($("<h3>").attr("class", "card-title").text(response.name));
-        //display last updated
+        // last update date & time
         var currentDate = moment(response.dt, "X").format("dddd, MMMM Do YYYY, h:mm a");
         cardBody.append($("<p>").attr("class", "card-text").append($("<small>").attr("class", "text-muted").text("Last updated: " + currentDate)));
-        //display Temperature
+        // local temperature at searched city 
         cardBody.append($("<p>").attr("class", "card-text").html("Temperature: " + response.main.temp + " &#8457;"));
-        //display Humidity
+        // local humidity at searched city
         cardBody.append($("<p>").attr("class", "card-text").text("Humidity: " + response.main.humidity + "%"));
-        //display Wind Speed
+        // wind speed ''
         cardBody.append($("<p>").attr("class", "card-text").text("Wind Speed: " + response.wind.speed + " MPH"));
-        //get UV Index
+        // uv index ''
         var uvURL = "https://api.openweathermap.org/data/2.5/uvi?appid=7e4c7478cc7ee1e11440bf55a8358ec3&lat=" + response.coord.lat + "&lon=" + response.coord.lat;
         $.ajax({
             url: uvURL,
@@ -123,16 +123,16 @@ function getCurrent(city) {
     });
 }
 function getForecast(city) {
-    //get 5 day forecast
+    // 5 day forecast
     var queryURL = "https://api.openweathermap.org/data/2.5/forecast?id=" + city + "&APPID=846c51800489cd6a062d23f85a4d24c8";
     $.ajax({
         url: queryURL,
         method: "GET"
     }).then(function (response) {
-        //add container div for forecast cards
+        //card for 5 day forecast
         var addRow = $("<div>").attr("class", "forecast");
         $("#forecast").append(addRow);
-        //loop through array response to find the forecasts for 15:00
+        // for loop / array at set time for forecast
         for (var i = 0; i < response.list.length; i++) {
             if (response.list[i].dt_txt.indexOf("15:00:00") !== -1) {
                 var addCol = $("<div>").attr("class", "one-fifth");
@@ -152,35 +152,35 @@ function getForecast(city) {
     });
 }
 function clear() {
-    //clear weather history
+    //clear weather history ?
     $("#forecast").empty();
 }
 function saveLocation(location){
-    // saved locations array
+    // array of saved locations
     if (savedLocations === null) {
         savedLocations = [location];
     }
     else if (savedLocations.indexOf(location) === -1) {
         savedLocations.push(location);
     }
-    //save the new array to localstorage
+    // array to local storage
     localStorage.setItem("weather", JSON.stringify(savedLocations));
     showPrevious();
 }
 $("#searchBtn").on("click", function () {
-    //don't refresh the screen
+    
     event.preventDefault();
     //grab the value
     var location = $("#searchInput").val().trim();
-    //if location wasn't empty
+    // location ?
     if (location !== "") {
-        //clear the previous weather
+        // clear display city
         clear();
         currentLocation = location;
         saveLocation(location);
-        //clear the search
+        // clear the search ?
         $("#searchInput").val("");
-        //get the new weather update
+        //current city
         getCurrent(location);
     }
 });
