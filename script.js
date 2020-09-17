@@ -191,4 +191,3 @@ $(document).on("click", "#local-btn", function () {
     getCurrent(currentLocation);
 });
 initialize();
-initialize();
