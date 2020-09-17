@@ -64,7 +64,7 @@ function getCurrent(city) {
         method: "GET",
         error: function (){
             savedLocations.splice(savedLocations.indexOf(city), 1);
-            localStorage.setItem("weather", JSON.stringify(savedLocations));
+            localStorage.setItem("cities", JSON.stringify(savedLocations));
             initialize();
         }
     }).then(function (response) {
@@ -164,7 +164,7 @@ function saveLocation(location){
         savedLocations.push(location);
     }
     // array to local storage
-    localStorage.setItem("weather", JSON.stringify(savedLocations));
+    localStorage.setItem("cities", JSON.stringify(savedLocations));
     showPrevious();
 }
 $("#searchBtn").on("click", function () {
