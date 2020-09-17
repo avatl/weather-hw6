@@ -88,8 +88,10 @@ function getCurrent(city) {
         // last update date & time
         var currentDate = moment(response.dt, "X").format("dddd, MMMM Do YYYY, h:mm a");
         cardBody.append($("<p>").attr("class", "card-text").append($("<small>").attr("class", "text-muted").text("Last updated: " + currentDate)));
+        // equation from kelvin to fahrenheit
+        var tempF = (response.main.temp - 273.15) * 1.80 + 32;
         // local temperature at searched city 
-        cardBody.append($("<p>").attr("class", "card-text").html("Temperature: " + response.main.temp + " &#8457;"));
+        cardBody.append($("<p>").attr("class", "card-text").html("Temperature: " + tempF.toFixed(2) + " &#8457;"));
         // local humidity at searched city
         cardBody.append($("<p>").attr("class", "card-text").text("Humidity: " + response.main.humidity + "%"));
         // wind speed ''
@@ -145,6 +147,7 @@ function getForecast(city) {
                 addCard.append(cardImg);
                 var bodyDiv = $("<div>").attr("class", "card-body");
                 addCard.append(bodyDiv);
+                // equation from kelvin to fahrenheit ?
                 bodyDiv.append($("<p>").attr("class", "card-text").html("Temp: " + response.list[i].main.temp + " &#8457;"));
                 bodyDiv.append($("<p>").attr("class", "card-text").text("Humidity: " + response.list[i].main.humidity + "%"));
             }
