@@ -10,5 +10,7 @@ For this assignment, I familiarized myself with popper, geo-locate, temp equatio
 live link: https://avatl.github.io/weather-hw6/
 
 Set Backs:
+<br>
     - I was unable to successfully change the temperature for the 5 day forecast from kelvin to fahrenheit, but I plan to make this change as soon as I am able to properly code this equation. I will resubmit this assignment once this issue is fixed. 
+    <br>
     - I <b>finally</b> learned how to insert an image in markdown languages (thank you Alison!) Next thing I will learn is adding gifs!
