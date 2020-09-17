@@ -34,9 +34,9 @@ function success(position) {
         getCurrent(currentLocation);
     });
 }
-function error() {
+function error(){
     //Giving a previous search since there isn't one
-    currentLocation = "New york"
+    currentLocation= "New york"
     getCurrent(currentLocation);
 }
 function showPrevious() {
@@ -46,7 +46,7 @@ function showPrevious() {
         var Btns = $("<div>").attr("class", "list-group");
         for (var i = 0; i < savedLocations.length; i++) {
             var localBtn = $("<a>").attr("href", "#").attr("id", "local-btn").text(savedLocations[i]);
-            if (savedLocations[i] == currentLocation) {
+            if (savedLocations[i] == currentLocation){
                 localBtn.attr("class", "list-group-item list-group-item-action active");
             }
             else {
@@ -62,7 +62,7 @@ function getCurrent(city) {
     $.ajax({
         url: queryURL,
         method: "GET",
-        error: function () {
+        error: function (){
             savedLocations.splice(savedLocations.indexOf(city), 1);
             localStorage.setItem("weather", JSON.stringify(savedLocations));
             initialize();
@@ -155,7 +155,7 @@ function clear() {
     //clear weather history
     $("#forecast").empty();
 }
-function saveLocation(location) {
+function saveLocation(location){
     // saved locations array
     if (savedLocations === null) {
         savedLocations = [location];
@@ -186,8 +186,9 @@ $("#searchBtn").on("click", function () {
 });
 $(document).on("click", "#local-btn", function () {
     clear();
-    currentLocation = $(this).text();
+    currentLocation= $(this).text();
     showPrevious();
     getCurrent(currentLocation);
 });
+initialize();
 initialize();
