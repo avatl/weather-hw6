@@ -147,8 +147,9 @@ function getForecast(city) {
                 addCard.append(cardImg);
                 var bodyDiv = $("<div>").attr("class", "card-body");
                 addCard.append(bodyDiv);
-                // equation from kelvin to fahrenheit ?
-                bodyDiv.append($("<p>").attr("class", "card-text").html("Temp: " + response.list[i].main.temp + " &#8457;"));
+                // equation from kelvin to fahrenheit
+                var tempF5 = (response.list[i].main.temp - 273.15) * 1.80 + 32;
+                bodyDiv.append($("<p>").attr("class", "card-text").html("Temp: " + tempF5.toFixed(2) + " &#8457;"));
                 bodyDiv.append($("<p>").attr("class", "card-text").text("Humidity: " + response.list[i].main.humidity + "%"));
             }
         }
